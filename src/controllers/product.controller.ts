@@ -73,3 +73,27 @@ export async function removeOne(req: Request<{ id: string }>, res: Response) {
     return res.sendStatus(500);
   }
 }
+
+export async function edit(
+  req: Request<{ id: string }, {}, productCreateBody>,
+  res: Response
+) {
+  try {
+    const validation = validationResult(req);
+    if (!validation.isEmpty()) return res.status(400).json(validation);
+
+    const { id } = req.params;
+
+    const product = await ProductModel.findByIdAndUpdate(id, req.body, {
+      returnDocument: 'after',
+    });
+
+    if (!product)
+      return res.status(404).json({ msg: "Product doesn't exists" });
+
+    return res.status(200).json(product);
+  } catch (error) {
+    console.log(`[Error] Product edit error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
