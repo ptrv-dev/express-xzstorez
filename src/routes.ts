@@ -65,4 +65,5 @@ export default function (app: Express) {
     productCreateValidation,
     ProductController.create
   );
+  app.delete('/product/:id', verifyToken, ProductController.removeOne);
 }
