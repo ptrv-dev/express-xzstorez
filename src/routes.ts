@@ -17,7 +17,10 @@ import {
   categoryCreateValidation,
   categoryEditValidation,
 } from './validations/category.validation';
-import { brandCreateValidation } from './validations/brand.validation';
+import {
+  brandCreateValidation,
+  brandEditValidation,
+} from './validations/brand.validation';
 import {
   productCreateValidation,
   productEditValidation,
@@ -60,7 +63,7 @@ export default function (app: Express) {
   app.patch(
     '/brand/:id',
     verifyToken,
-    brandCreateValidation,
+    brandEditValidation,
     BrandController.edit
   );
   // product routes
