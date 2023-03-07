@@ -41,11 +41,12 @@ export async function getAll(
   try {
     const { q = '', category, brand, sort, order } = req.query;
 
-    const products = await ProductModel.find({
-      title: { $regex: new RegExp(q), $options: 'i' },
-      category: category || undefined,
-      brand: brand || undefined,
-    })
+    const query = {} as { [key: string]: any };
+    if (q) query.title = { $regex: new RegExp(q), $options: 'i' };
+    if (category) query.category = category;
+    if (brand) query.brand = brand;
+
+    const products = await ProductModel.find(query)
       .sort({ [sort || 'createdAt']: order || 'desc' })
       .limit(20)
       .populate('brand category');
