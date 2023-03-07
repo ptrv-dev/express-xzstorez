@@ -34,3 +34,19 @@ export async function getAll(req: Request, res: Response) {
     return res.sendStatus(500);
   }
 }
+
+export async function removeOne(req: Request<{ id: string }>, res: Response) {
+  try {
+    const { id } = req.params;
+
+    const category = await CategoryModel.findByIdAndDelete(id);
+
+    if (!category)
+      return res.status(404).json({ msg: "Category doesn't exists" });
+
+    return res.status(200).json(category);
+  } catch (error) {
+    console.log(`[Error] Category remove one error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
