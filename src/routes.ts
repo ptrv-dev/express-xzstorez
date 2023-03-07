@@ -13,7 +13,10 @@ import { verifyToken } from './middlewares/verifyToken';
 
 // validations
 import { loginValidation } from './validations/auth.validation';
-import { categoryCreateValidation } from './validations/category.validation';
+import {
+  categoryCreateValidation,
+  categoryEditValidation,
+} from './validations/category.validation';
 import { brandCreateValidation } from './validations/brand.validation';
 import {
   productCreateValidation,
@@ -41,7 +44,7 @@ export default function (app: Express) {
   app.patch(
     '/category/:id',
     verifyToken,
-    categoryCreateValidation,
+    categoryEditValidation,
     CategoryController.edit
   );
   app.delete('/category/:id', verifyToken, CategoryController.removeOne);
