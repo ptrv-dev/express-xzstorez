@@ -22,5 +22,11 @@ export default function (app: Express) {
     categoryCreateValidation,
     CategoryController.create
   );
+  app.patch(
+    '/category/:id',
+    verifyToken,
+    categoryCreateValidation,
+    CategoryController.edit
+  );
   app.delete('/category/:id', verifyToken, CategoryController.removeOne);
 }
