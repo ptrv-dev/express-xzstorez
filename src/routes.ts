@@ -36,6 +36,7 @@ export default function (app: Express) {
   );
   // auth routes
   app.post('/auth/login', loginValidation, AuthController.login);
+  app.get('/auth/check', loginValidation, AuthController.check);
   // category routes
   app.get('/category', CategoryController.getAll);
   app.post(

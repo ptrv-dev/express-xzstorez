@@ -31,3 +31,7 @@ export async function login(req: Request<{}, {}, loginBody>, res: Response) {
     return res.sendStatus(500);
   }
 }
+
+export async function check(req: Request, res: Response) {
+  return res.sendStatus(200);
+}
