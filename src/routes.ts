@@ -15,7 +15,10 @@ import { verifyToken } from './middlewares/verifyToken';
 import { loginValidation } from './validations/auth.validation';
 import { categoryCreateValidation } from './validations/category.validation';
 import { brandCreateValidation } from './validations/brand.validation';
-import { productCreateValidation } from './validations/product.validation';
+import {
+  productCreateValidation,
+  productEditValidation,
+} from './validations/product.validation';
 
 export default function (app: Express) {
   // upload routes
@@ -66,4 +69,10 @@ export default function (app: Express) {
     ProductController.create
   );
   app.delete('/product/:id', verifyToken, ProductController.removeOne);
+  app.patch(
+    '/product/:id',
+    verifyToken,
+    productEditValidation,
+    ProductController.edit
+  );
 }
