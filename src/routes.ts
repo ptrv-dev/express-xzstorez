@@ -15,6 +15,7 @@ export default function (app: Express) {
   // auth routes
   app.post('/auth/login', loginValidation, AuthController.login);
   // category routes
+  app.get('/category', CategoryController.getAll);
   app.post(
     '/category',
     verifyToken,
