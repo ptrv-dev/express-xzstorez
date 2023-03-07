@@ -48,4 +48,5 @@ export default function (app: Express) {
     brandCreateValidation,
     BrandController.create
   );
+  app.delete('/brand/:id', verifyToken, BrandController.removeOne);
 }
