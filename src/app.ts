@@ -4,6 +4,8 @@ import cookieParser from 'cookie-parser';
 import multer from 'multer';
 import dotenv from 'dotenv';
 
+import routes from './routes';
+
 // dotenv config
 dotenv.config();
 
@@ -34,9 +36,7 @@ app.use(cookieParser());
 
 app.use('/uploads', express.static('./uploads'));
 
-app.get('/', (req, res) => {
-  res.send('Hello world!');
-});
+routes(app);
 
 app.listen(PORT, () => {
   console.log(`Server started at port ${PORT}`);
