@@ -5,6 +5,7 @@ import multer from 'multer';
 import dotenv from 'dotenv';
 
 import routes from './routes';
+import mongoose from 'mongoose';
 
 // dotenv config
 dotenv.config();
@@ -41,3 +42,13 @@ routes(app);
 app.listen(PORT, () => {
   console.log(`Server started at port ${PORT}`);
 });
+
+async function mongodbConnect() {
+  try {
+    await mongoose.connect('mongodb://localhost:27017/shop');
+    console.log('MongoDB connected');
+  } catch (error) {
+    console.log(`[Error] MongoDB connecting error!\n${error}\n`);
+  }
+}
+mongodbConnect();
