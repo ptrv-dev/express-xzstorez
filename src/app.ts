@@ -9,6 +9,7 @@ dotenv.config();
 
 // constants
 const PORT = process.env.PORT || 5004;
+export const JWT_SECRET = process.env.JWT_SECRET || 'secret';
 
 // multer config
 const storage = multer.diskStorage({
