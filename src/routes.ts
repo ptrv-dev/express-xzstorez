@@ -41,6 +41,7 @@ export default function (app: Express) {
   );
   app.delete('/category/:id', verifyToken, CategoryController.removeOne);
   // brand routes
+  app.get('/brand', BrandController.getAll);
   app.post(
     '/brand',
     verifyToken,
