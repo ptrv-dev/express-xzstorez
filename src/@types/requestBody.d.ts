@@ -11,3 +11,13 @@ export interface brandCreateBody {
   image: string;
   title: string;
 }
+
+export interface productCreateBody {
+  images: [string];
+  title: string;
+  description?: string;
+  category?: string;
+  brand?: string;
+  sizes?: [string];
+  price: number;
+}
