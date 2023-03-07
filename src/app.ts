@@ -1,8 +1,10 @@
 import express from 'express';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import multer from 'multer';
 import dotenv from 'dotenv';
 
-// Dotenv config
+// dotenv config
 dotenv.config();
 
 // constants
@@ -18,12 +20,23 @@ const storage = multer.diskStorage({
   },
 });
 
+// express config
 const app = express();
+app.use(
+  cors({
+    credentials: true,
+    origin: ['http://localhost:3000'],
+  })
+);
+app.use(express.json());
+app.use(cookieParser());
+
+app.use('/uploads', express.static('./uploads'));
 
 app.get('/', (req, res) => {
   res.send('Hello world!');
 });
 
-app.listen(5004, () => {
-  console.log('Server started');
+app.listen(PORT, () => {
+  console.log(`Server started at port ${PORT}`);
 });
