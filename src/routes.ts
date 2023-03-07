@@ -58,6 +58,7 @@ export default function (app: Express) {
     BrandController.edit
   );
   // product routes
+  app.get('/product', ProductController.getAll);
   app.post(
     '/product',
     verifyToken,
