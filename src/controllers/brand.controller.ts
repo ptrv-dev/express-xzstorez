@@ -34,3 +34,18 @@ export async function getAll(req: Request, res: Response) {
     return res.sendStatus(500);
   }
 }
+
+export async function removeOne(req: Request<{ id: string }>, res: Response) {
+  try {
+    const { id } = req.params;
+
+    const brand = await BrandModel.findByIdAndDelete(id);
+
+    if (!brand) return res.status(404).json({ msg: "Brand doesn't exists" });
+
+    return res.status(200).json(brand);
+  } catch (error) {
+    console.log(`[Error] Brand remove one error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
