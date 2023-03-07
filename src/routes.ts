@@ -49,4 +49,10 @@ export default function (app: Express) {
     BrandController.create
   );
   app.delete('/brand/:id', verifyToken, BrandController.removeOne);
+  app.patch(
+    '/brand/:id',
+    verifyToken,
+    brandCreateValidation,
+    BrandController.edit
+  );
 }
