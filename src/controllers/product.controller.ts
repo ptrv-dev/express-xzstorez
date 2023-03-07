@@ -57,3 +57,19 @@ export async function getAll(
     return res.sendStatus(500);
   }
 }
+
+export async function removeOne(req: Request<{ id: string }>, res: Response) {
+  try {
+    const { id } = req.params;
+
+    const product = await ProductModel.findByIdAndDelete(id);
+
+    if (!product)
+      return res.status(404).json({ msg: "Product doesn't exists" });
+
+    return res.status(200).json(product);
+  } catch (error) {
+    console.log(`[Error] Product remove one error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
