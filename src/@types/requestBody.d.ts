@@ -6,3 +6,8 @@ export interface loginBody {
 export interface categoryCreateBody {
   title: string;
 }
+
+export interface brandCreateBody {
+  image: string;
+  title: string;
+}
