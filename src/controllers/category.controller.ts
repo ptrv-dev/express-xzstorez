@@ -23,3 +23,14 @@ export async function create(
     return res.sendStatus(500);
   }
 }
+
+export async function getAll(req: Request, res: Response) {
+  try {
+    const categories = await CategoryModel.find();
+
+    return res.status(200).json({ data: categories });
+  } catch (error) {
+    console.log(`[Error] Category get all error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
