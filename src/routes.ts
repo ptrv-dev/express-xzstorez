@@ -5,6 +5,7 @@ import { upload } from './app';
 import * as AuthController from './controllers/auth.controller';
 import * as CategoryController from './controllers/category.controller';
 import * as UploadController from './controllers/upload.controller';
+import * as BrandController from './controllers/brand.controller';
 
 // middleware
 import { verifyToken } from './middlewares/verifyToken';
@@ -12,6 +13,7 @@ import { verifyToken } from './middlewares/verifyToken';
 // validations
 import { loginValidation } from './validations/auth.validation';
 import { categoryCreateValidation } from './validations/category.validation';
+import { brandCreateValidation } from './validations/brand.validation';
 
 export default function (app: Express) {
   // upload routes
@@ -38,4 +40,11 @@ export default function (app: Express) {
     CategoryController.edit
   );
   app.delete('/category/:id', verifyToken, CategoryController.removeOne);
+  // brand routes
+  app.post(
+    '/brand',
+    verifyToken,
+    brandCreateValidation,
+    BrandController.create
+  );
 }
