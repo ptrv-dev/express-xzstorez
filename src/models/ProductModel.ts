@@ -25,7 +25,7 @@ const ProductSchema = new mongoose.Schema(
       type: [String],
     },
     price: {
-      type: Number,
+      type: mongoose.Types.Decimal128,
       required: true,
     },
   },
