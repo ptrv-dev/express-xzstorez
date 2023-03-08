@@ -36,7 +36,7 @@ export default function (app: Express) {
   );
   // auth routes
   app.post('/auth/login', loginValidation, AuthController.login);
-  app.get('/auth/check', loginValidation, AuthController.check);
+  app.get('/auth/check', verifyToken, AuthController.check);
   // category routes
   app.get('/category', CategoryController.getAll);
   app.post(
@@ -69,6 +69,7 @@ export default function (app: Express) {
   );
   // product routes
   app.get('/product', ProductController.getAll);
+  app.get('/product/:id', ProductController.getOne);
   app.post(
     '/product',
     verifyToken,
