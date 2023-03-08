@@ -51,9 +51,25 @@ export async function getAll(
       .limit(20)
       .populate('brand category');
 
-    return res.status(200).json(products);
+    return res.status(200).json({ data: products });
   } catch (error) {
     console.log(`[Error] Product get all error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
+
+export async function getOne(req: Request<{ id: string }>, res: Response) {
+  try {
+    const { id } = req.params;
+
+    const product = await ProductModel.findById(id);
+
+    if (!product)
+      return res.status(404).json({ msg: "Product doesn't exists" });
+
+    return res.status(200).json(product);
+  } catch (error) {
+    console.log(`[Error] Product get one error!\n${error}\n\n`);
     return res.sendStatus(500);
   }
 }
