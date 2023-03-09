@@ -75,3 +75,18 @@ export async function edit(
     return res.sendStatus(500);
   }
 }
+
+export async function getOne(req: Request<{ id: string }>, res: Response) {
+  try {
+    const { id } = req.params;
+
+    const brand = await BrandModel.findById(id);
+
+    if (!brand) return res.status(404).json({ msg: "Brand doesn't exists" });
+
+    return res.status(200).json(brand);
+  } catch (error) {
+    console.log(`[Error] Brand get one error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
