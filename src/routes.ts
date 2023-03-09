@@ -39,6 +39,7 @@ export default function (app: Express) {
   app.get('/auth/check', verifyToken, AuthController.check);
   // category routes
   app.get('/category', CategoryController.getAll);
+  app.get('/category/:id', CategoryController.getOne);
   app.post(
     '/category',
     verifyToken,
@@ -54,6 +55,7 @@ export default function (app: Express) {
   app.delete('/category/:id', verifyToken, CategoryController.removeOne);
   // brand routes
   app.get('/brand', BrandController.getAll);
+  app.get('/brand/:id', BrandController.getOne);
   app.post(
     '/brand',
     verifyToken,
