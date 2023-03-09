@@ -62,7 +62,7 @@ export async function getOne(req: Request<{ id: string }>, res: Response) {
   try {
     const { id } = req.params;
 
-    const product = await ProductModel.findById(id);
+    const product = await ProductModel.findById(id).populate('category brand');
 
     if (!product)
       return res.status(404).json({ msg: "Product doesn't exists" });
@@ -100,9 +100,17 @@ export async function edit(
 
     const { id } = req.params;
 
-    const product = await ProductModel.findByIdAndUpdate(id, req.body, {
-      returnDocument: 'after',
-    });
+    const product = await ProductModel.findByIdAndUpdate(
+      id,
+      {
+        ...req.body,
+        category: req.body.category || null,
+        brand: req.body.brand || null,
+      },
+      {
+        returnDocument: 'after',
+      }
+    );
 
     if (!product)
       return res.status(404).json({ msg: "Product doesn't exists" });
