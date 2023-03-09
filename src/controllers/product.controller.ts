@@ -39,19 +39,31 @@ export async function getAll(
   res: Response
 ) {
   try {
-    const { q = '', category, brand, sort, order } = req.query;
+    const {
+      q = '',
+      category,
+      brand,
+      sort,
+      order,
+      limit = 20,
+      page = 1,
+    } = req.query;
 
     const query = {} as { [key: string]: any };
     if (q) query.title = { $regex: new RegExp(q), $options: 'i' };
     if (category) query.category = category;
     if (brand) query.brand = brand;
 
+    const productsCount = await ProductModel.countDocuments();
+    const pagesCount = Math.ceil(productsCount / limit);
+
     const products = await ProductModel.find(query)
       .sort({ [sort || 'createdAt']: order || 'desc' })
-      .limit(20)
+      .skip(Math.ceil(limit * (page - 1)))
+      .limit(limit)
       .populate('brand category');
 
-    return res.status(200).json({ data: products });
+    return res.status(200).json({ data: products, page, pagesCount });
   } catch (error) {
     console.log(`[Error] Product get all error!\n${error}\n\n`);
     return res.sendStatus(500);

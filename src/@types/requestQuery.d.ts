@@ -4,4 +4,6 @@ export interface productGetAllQuery {
   brand?: string;
   sort?: string;
   order?: 'asc' | 'desc';
+  limit?: number;
+  page?: number;
 }
