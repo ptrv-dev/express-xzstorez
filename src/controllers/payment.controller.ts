@@ -80,8 +80,15 @@ export async function createOrder(
     const validation = validationResult(req);
     if (!validation.isEmpty()) return res.status(400).json(validation);
 
-    const track = (Math.random() * 1000000000).toFixed(0);
     const { session_id } = req.body;
+
+    const exists = await OrderModel.findOne({ session_id });
+
+    if (exists) {
+      return res.status(200).json({ track: exists.track });
+    }
+
+    const track = (Math.random() * 1000000000).toFixed(0);
 
     try {
       await stripe.checkout.sessions.retrieve(session_id);
