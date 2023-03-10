@@ -21,3 +21,17 @@ export interface productCreateBody {
   sizes?: [string];
   price: number;
 }
+
+export interface paymentProductItem {
+  _id: string;
+  name: string;
+  description: string;
+  price: number;
+  quantity: number;
+}
+
+export interface orderCreateBody {
+  session_id: string;
+}
+
+export type paymentCreateBody = paymentProductItem[];

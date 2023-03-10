@@ -7,6 +7,7 @@ import * as CategoryController from './controllers/category.controller';
 import * as UploadController from './controllers/upload.controller';
 import * as BrandController from './controllers/brand.controller';
 import * as ProductController from './controllers/product.controller';
+import * as PaymentController from './controllers/payment.controller';
 
 // middleware
 import { verifyToken } from './middlewares/verifyToken';
@@ -25,6 +26,7 @@ import {
   productCreateValidation,
   productEditValidation,
 } from './validations/product.validation';
+import { orderCreateValidation } from './validations/payment.validation';
 
 export default function (app: Express) {
   // upload routes
@@ -85,4 +87,8 @@ export default function (app: Express) {
     productEditValidation,
     ProductController.edit
   );
+  // payment
+  app.post('/payment', PaymentController.create);
+  app.get('/payment', PaymentController.get);
+  app.post('/order', orderCreateValidation, PaymentController.createOrder);
 }

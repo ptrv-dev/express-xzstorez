@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
+import { validationResult } from 'express-validator';
 import Stripe from 'stripe';
-import { paymentCreateBody } from '../@types/requestBody';
+import { orderCreateBody, paymentCreateBody } from '../@types/requestBody';
+import OrderModel from '../models/OrderModel';
 
 const stripe = new Stripe(
   'sk_test_51MQqzAGLf8CEUHkqkYcPL0KHoCaaWmbpCbIrZMjJK58a3oaNac3Qy6ZKkod8DIqWiQLOj6PUFu3X49rKADpmKybk00rWJiZg6g',
@@ -49,6 +51,49 @@ export async function create(
     return res.status(200).json(session.url);
   } catch (error) {
     console.log(`[Error] Payment create error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
+
+export async function get(
+  req: Request<{}, {}, {}, { session_id: string }>,
+  res: Response
+) {
+  try {
+    // cs_test_a1NWWHsLiDhWEdlZqyxtfnR4ZN1JbDkTASMbcjZxKdX5aQDpYv53CbKke5
+    const session = await stripe.checkout.sessions.retrieve(
+      req.query.session_id
+    );
+
+    return res.status(200).json(session);
+  } catch (error) {
+    console.log(`[Error] Payment info error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
+
+export async function createOrder(
+  req: Request<{}, {}, orderCreateBody>,
+  res: Response
+) {
+  try {
+    const validation = validationResult(req);
+    if (!validation.isEmpty()) return res.status(400).json(validation);
+
+    const track = (Math.random() * 1000000000).toFixed(0);
+    const { session_id } = req.body;
+
+    try {
+      await stripe.checkout.sessions.retrieve(session_id);
+    } catch (error) {
+      return res.status(400).json({ msg: 'Incorrect session_id!' });
+    }
+
+    const order = await OrderModel.create({ track, session_id });
+
+    return res.status(200).json({ track: order.track });
+  } catch (error) {
+    console.log(`[Error] Order create error!\n${error}\n\n`);
     return res.sendStatus(500);
   }
 }
