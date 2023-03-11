@@ -23,7 +23,7 @@ export async function create(
       description,
       category,
       brand,
-      sizes,
+      sizes: sizes?.filter((size) => Boolean(size.trim().length)),
       price,
     });
 
