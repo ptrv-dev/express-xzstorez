@@ -91,4 +91,5 @@ export default function (app: Express) {
   app.post('/payment', PaymentController.create);
   app.get('/payment', PaymentController.get);
   app.post('/order', orderCreateValidation, PaymentController.createOrder);
+  app.get('/order/:id', PaymentController.track);
 }
