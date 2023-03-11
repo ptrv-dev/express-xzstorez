@@ -29,7 +29,7 @@ export async function create(
         price_data: {
           product: product.id,
           currency: 'USD',
-          unit_amount_decimal: item.price.toFixed(2).replace('.', ''),
+          unit_amount_decimal: Number(item.price).toFixed(2).replace('.', ''),
         },
         quantity: item.quantity,
       });
@@ -48,7 +48,7 @@ export async function create(
 
     if (!session.url) return res.sendStatus(500);
 
-    return res.status(200).json(session.url);
+    return res.status(200).json({ url: session.url });
   } catch (error) {
     console.log(`[Error] Payment create error!\n${error}\n\n`);
     return res.sendStatus(500);
@@ -99,6 +99,25 @@ export async function createOrder(
     const order = await OrderModel.create({ track, session_id });
 
     return res.status(200).json({ track: order.track });
+  } catch (error) {
+    console.log(`[Error] Order create error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
+
+export async function track(req: Request<{id:string}>,res:Response) {
+  try {
+    const { id } = req.params;
+
+    const order = await OrderModel.findOne({track: id});
+
+    if(!order) return res.sendStatus(404);
+    
+    const session = await stripe.checkout.sessions.retrieve(
+      order.session_id
+    );
+
+    return res.status(200).json(session);
   } catch (error) {
     console.log(`[Error] Order create error!\n${error}\n\n`);
     return res.sendStatus(500);
