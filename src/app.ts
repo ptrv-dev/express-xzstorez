@@ -31,7 +31,13 @@ const app = express();
 app.use(
   cors({
     credentials: true,
-    origin: ['http://localhost:3000'],
+    origin: [
+      'http://localhost:3000',
+      'http://admin.xzstorez.com',
+      'http://xzstorez.com',
+      'https://admin.xzstorez.com',
+      'https://xzstorez.com',
+    ],
   })
 );
 app.use(express.json());
@@ -47,7 +53,7 @@ app.listen(PORT, () => {
 
 async function mongodbConnect() {
   try {
-    await mongoose.connect('mongodb://localhost:27017/shop');
+    await mongoose.connect('mongodb://127.0.0.1:27017/shop');
     console.log('MongoDB connected');
   } catch (error) {
     console.log(`[Error] MongoDB connecting error!\n${error}\n`);
