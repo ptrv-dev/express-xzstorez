@@ -41,6 +41,32 @@ export async function create(
       success_url: `${domain}/order-complete?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${domain}/cart`,
       billing_address_collection: 'required',
+      shipping_address_collection: {
+        allowed_countries: [
+          'US',
+          'CA',
+          'MX',
+          'HN',
+          'ES',
+          'PT',
+          'FR',
+          'DE',
+          'SE',
+          'RU',
+          'UA',
+          'PL',
+          'BY',
+          'AC',
+          'IE',
+          'NO',
+          'FI',
+          'RO',
+          'TR',
+          'BG',
+          'KZ',
+          'PT',
+        ],
+      },
       phone_number_collection: {
         enabled: true,
       },
@@ -105,17 +131,15 @@ export async function createOrder(
   }
 }
 
-export async function track(req: Request<{id:string}>,res:Response) {
+export async function track(req: Request<{ id: string }>, res: Response) {
   try {
     const { id } = req.params;
 
-    const order = await OrderModel.findOne({track: id});
+    const order = await OrderModel.findOne({ track: id });
 
-    if(!order) return res.sendStatus(404);
-    
-    const session = await stripe.checkout.sessions.retrieve(
-      order.session_id
-    );
+    if (!order) return res.sendStatus(404);
+
+    const session = await stripe.checkout.sessions.retrieve(order.session_id);
 
     return res.status(200).json(session);
   } catch (error) {
