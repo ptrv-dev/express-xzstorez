@@ -8,6 +8,7 @@ import * as UploadController from './controllers/upload.controller';
 import * as BrandController from './controllers/brand.controller';
 import * as ProductController from './controllers/product.controller';
 import * as PaymentStripeController from './controllers/payment.stripe.controller';
+import * as CouponController from './controllers/coupon.controller';
 
 // middleware
 import { verifyToken } from './middlewares/verifyToken';
@@ -27,6 +28,7 @@ import {
   productEditValidation,
 } from './validations/product.validation';
 import { orderCreateValidation } from './validations/payment.validation';
+import { createCouponeValidation } from './validations/coupon.validation';
 
 export default function (app: Express) {
   // upload routes
@@ -96,4 +98,11 @@ export default function (app: Express) {
     PaymentStripeController.createOrder
   );
   app.get('/order/:id', PaymentStripeController.track);
+  // coupon
+  app.post(
+    '/coupon',
+    verifyToken,
+    createCouponeValidation,
+    CouponController.create
+  );
 }
