@@ -35,3 +35,9 @@ export interface orderCreateBody {
 }
 
 export type paymentCreateBody = paymentProductItem[];
+
+export interface couponCreateBody {
+  name: string;
+  coupon: string;
+  percent: number;
+}
