@@ -4,6 +4,7 @@ const CouponSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     coupon: { type: String, required: true },
+    percent: { type: mongoose.Types.Decimal128, required: true },
     uses: { type: Number, default: 0 },
   },
   { timestamps: true }
