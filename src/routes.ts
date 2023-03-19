@@ -105,4 +105,5 @@ export default function (app: Express) {
     createCouponValidation,
     CouponController.create
   );
+  app.get('/coupon', verifyToken, CouponController.getAll);
 }
