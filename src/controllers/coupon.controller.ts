@@ -25,7 +25,7 @@ export async function create(
 
 export async function getAll(req: Request, res: Response) {
   try {
-    const coupons = await CouponModel.find();
+    const coupons = await CouponModel.find().sort({ uses: 'desc' });
 
     return res.status(200).json({ data: coupons });
   } catch (error) {
