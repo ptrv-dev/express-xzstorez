@@ -116,4 +116,5 @@ export default function (app: Express) {
     editCouponValidation,
     CouponController.edit
   );
+  app.delete('/coupon/:id', verifyToken, CouponController.removeOne);
 }

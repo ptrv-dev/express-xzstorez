@@ -72,7 +72,22 @@ export async function edit(
 
     return res.status(200).json(coupon);
   } catch (error) {
-    console.log(`[Error] Coupon get one error!\n${error}\n\n`);
+    console.log(`[Error] Coupon edit error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
+
+export async function removeOne(req:Request<{id:string}>,res:Response) {
+  try {
+    const {id} = req.params;
+
+    const coupon = await CouponModel.findByIdAndRemove(id);
+
+    if (!coupon) return res.status(404).json({ msg: "Coupon doesn't exists" });
+
+    return res.sendStatus(200);
+  } catch (error) {
+    console.log(`[Error] Coupon remove one error!\n${error}\n\n`);
     return res.sendStatus(500);
   }
 }
