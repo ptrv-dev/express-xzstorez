@@ -34,7 +34,7 @@ export async function getAll(req: Request, res: Response) {
   }
 }
 
-export async function getOne(
+export async function findOne(
   req: Request<{}, {}, {}, { q: string }>,
   res: Response
 ) {
@@ -49,7 +49,7 @@ export async function getOne(
 
     return res.status(200).json(coupon);
   } catch (error) {
-    console.log(`[Error] Coupon get one error!\n${error}\n\n`);
+    console.log(`[Error] Coupon find one error!\n${error}\n\n`);
     return res.sendStatus(500);
   }
 }
@@ -77,9 +77,9 @@ export async function edit(
   }
 }
 
-export async function removeOne(req:Request<{id:string}>,res:Response) {
+export async function removeOne(req: Request<{ id: string }>, res: Response) {
   try {
-    const {id} = req.params;
+    const { id } = req.params;
 
     const coupon = await CouponModel.findByIdAndRemove(id);
 
@@ -88,6 +88,21 @@ export async function removeOne(req:Request<{id:string}>,res:Response) {
     return res.sendStatus(200);
   } catch (error) {
     console.log(`[Error] Coupon remove one error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
+
+export async function getOne(req: Request<{ id: string }>, res: Response) {
+  try {
+    const { id } = req.params;
+
+    const coupon = await CouponModel.findById(id);
+
+    if (!coupon) return res.status(404).json({ msg: "Coupon doesn't exists" });
+
+    return res.status(200).json(coupon);
+  } catch (error) {
+    console.log(`[Error] Coupon get one error!\n${error}\n\n`);
     return res.sendStatus(500);
   }
 }
