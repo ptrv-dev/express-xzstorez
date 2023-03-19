@@ -35,11 +35,18 @@ export async function create(
       });
     }
 
+    // const promo = await stripe.coupons.create({
+    //   percent_off: 10,
+    //   name: 'TEST',
+    //   duration: 'once',
+    // });
+
     const session = await stripe.checkout.sessions.create({
       line_items,
       mode: 'payment',
       success_url: `${domain}/order-complete?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${domain}/cart`,
+      // discounts: [{ coupon: promo.id }],
       billing_address_collection: 'required',
       shipping_address_collection: {
         allowed_countries: [
@@ -86,7 +93,6 @@ export async function get(
   res: Response
 ) {
   try {
-    // cs_test_a1NWWHsLiDhWEdlZqyxtfnR4ZN1JbDkTASMbcjZxKdX5aQDpYv53CbKke5
     const session = await stripe.checkout.sessions.retrieve(
       req.query.session_id
     );

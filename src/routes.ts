@@ -7,7 +7,7 @@ import * as CategoryController from './controllers/category.controller';
 import * as UploadController from './controllers/upload.controller';
 import * as BrandController from './controllers/brand.controller';
 import * as ProductController from './controllers/product.controller';
-import * as PaymentController from './controllers/payment.controller';
+import * as PaymentStripeController from './controllers/payment.stripe.controller';
 
 // middleware
 import { verifyToken } from './middlewares/verifyToken';
@@ -88,8 +88,12 @@ export default function (app: Express) {
     ProductController.edit
   );
   // payment
-  app.post('/payment', PaymentController.create);
-  app.get('/payment', PaymentController.get);
-  app.post('/order', orderCreateValidation, PaymentController.createOrder);
-  app.get('/order/:id', PaymentController.track);
+  app.post('/payment', PaymentStripeController.create);
+  app.get('/payment', PaymentStripeController.get);
+  app.post(
+    '/order',
+    orderCreateValidation,
+    PaymentStripeController.createOrder
+  );
+  app.get('/order/:id', PaymentStripeController.track);
 }
