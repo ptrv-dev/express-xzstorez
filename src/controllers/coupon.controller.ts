@@ -33,3 +33,23 @@ export async function getAll(req: Request, res: Response) {
     return res.sendStatus(500);
   }
 }
+
+export async function getOne(
+  req: Request<{}, {}, {}, { q: string }>,
+  res: Response
+) {
+  try {
+    const { q } = req.query;
+
+    const coupon = await CouponModel.findOne({
+      coupon: { $regex: new RegExp(`^${q}$`), $options: 'i' },
+    });
+
+    if (!coupon) return res.status(404).json({ msg: 'Incorrect coupon!' });
+
+    return res.status(200).json(coupon);
+  } catch (error) {
+    console.log(`[Error] Coupon get one error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
