@@ -28,7 +28,10 @@ import {
   productEditValidation,
 } from './validations/product.validation';
 import { orderCreateValidation } from './validations/payment.validation';
-import { createCouponValidation } from './validations/coupon.validation';
+import {
+  createCouponValidation,
+  editCouponValidation,
+} from './validations/coupon.validation';
 
 export default function (app: Express) {
   // upload routes
@@ -107,4 +110,10 @@ export default function (app: Express) {
   );
   app.get('/coupon', verifyToken, CouponController.getAll);
   app.get('/coupon/find', CouponController.getOne);
+  app.patch(
+    '/coupon/:id',
+    verifyToken,
+    editCouponValidation,
+    CouponController.edit
+  );
 }

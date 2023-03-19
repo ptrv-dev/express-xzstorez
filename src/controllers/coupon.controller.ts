@@ -53,3 +53,26 @@ export async function getOne(
     return res.sendStatus(500);
   }
 }
+
+export async function edit(
+  req: Request<{ id: string }, {}, couponCreateBody>,
+  res: Response
+) {
+  try {
+    const validation = validationResult(req);
+    if (!validation.isEmpty()) return res.status(400).json(validation);
+
+    const { id } = req.params;
+
+    const coupon = await CouponModel.findByIdAndUpdate(id, req.body, {
+      returnDocument: 'after',
+    });
+
+    if (!coupon) return res.status(404).json({ msg: "Coupon doesn't exists" });
+
+    return res.status(200).json(coupon);
+  } catch (error) {
+    console.log(`[Error] Coupon get one error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
