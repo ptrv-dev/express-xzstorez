@@ -9,6 +9,7 @@ import {
 import CouponModel from '../models/CouponModel';
 import SellixOrderModel from '../models/SellixOrderModel';
 
+const DOMAIN = 'http://localhost:3000';
 const API_KEY =
   'pMu9opKQiSHAhjsmQLRCMNziw4LLpi5pw4wJbE6O1hEoEAd1HNi7zIPpDwwRerYt';
 
@@ -51,7 +52,7 @@ export async function create(req: Request<{}, {}, CreateBody>, res: Response) {
       title: title.join('; '),
       currency: 'USD',
       value: total,
-      return_url: `http://localhost:3000/order-complete?uniqueId={{uniqid}}&orderId=${req.body.orderId}&merchant=sellix`,
+      return_url: `${DOMAIN}/order-complete?uniqueId={{uniqid}}&orderId=${req.body.orderId}&merchant=sellix`,
       email: req.body.email,
     };
 
