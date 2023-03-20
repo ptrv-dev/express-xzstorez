@@ -7,5 +7,4 @@ export const sellixOrderCreateValidation = [
   body('address').isString().isLength({ min: 2 }),
   body('city').isString().isLength({ min: 2 }),
   body('state').isString().isLength({ min: 2 }),
-  body('phoneNumber').isString(),
 ];

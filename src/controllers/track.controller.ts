@@ -37,7 +37,7 @@ export async function track(req: Request, res: Response) {
     } else if (sellixOrder) {
       result['fullName'] = sellixOrder.fullName;
       result['email'] = sellixOrder.email;
-      result['phone'] = sellixOrder.phoneNumber;
+      result['phone'] = sellixOrder.phoneNumber || 'Not specified';
       result['address'] = [
         sellixOrder.country,
         sellixOrder.state,
