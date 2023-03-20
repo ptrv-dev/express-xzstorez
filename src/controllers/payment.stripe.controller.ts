@@ -5,7 +5,7 @@ import { orderCreateBody, paymentCreateBody } from '../@types/requestBody';
 import CouponModel from '../models/CouponModel';
 import OrderModel from '../models/OrderModel';
 
-const stripe = new Stripe(
+export const stripe = new Stripe(
   'sk_test_51MQqzAGLf8CEUHkqkYcPL0KHoCaaWmbpCbIrZMjJK58a3oaNac3Qy6ZKkod8DIqWiQLOj6PUFu3X49rKADpmKybk00rWJiZg6g',
   { apiVersion: '2022-11-15' }
 );

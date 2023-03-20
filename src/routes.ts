@@ -10,6 +10,7 @@ import * as ProductController from './controllers/product.controller';
 import * as PaymentStripeController from './controllers/payment.stripe.controller';
 import * as PaymentSellixController from './controllers/payment.sellix.controller';
 import * as CouponController from './controllers/coupon.controller';
+import * as TrackController from './controllers/track.controller';
 
 // middleware
 import { verifyToken } from './middlewares/verifyToken';
@@ -102,7 +103,6 @@ export default function (app: Express) {
     orderCreateValidation,
     PaymentStripeController.createOrder
   );
-  // app.get('/order/:id', PaymentStripeController.track);
   // coupon
   app.post(
     '/coupon',
@@ -128,4 +128,6 @@ export default function (app: Express) {
     PaymentSellixController.createOrder
   );
   app.post('/order/sellix/check', PaymentSellixController.checkOrder);
+  // track
+  app.get('/track/:id', TrackController.track);
 }
