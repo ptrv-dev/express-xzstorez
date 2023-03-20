@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import Stripe from 'stripe';
 import { orderCreateBody, paymentCreateBody } from '../@types/requestBody';
+import CouponModel from '../models/CouponModel';
 import OrderModel from '../models/OrderModel';
 
 const stripe = new Stripe(
@@ -18,7 +19,7 @@ export async function create(
   try {
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [];
 
-    for (const item of req.body) {
+    for (const item of req.body.cart) {
       const product = await stripe.products.create({
         type: 'good',
         shippable: true,
@@ -35,18 +36,30 @@ export async function create(
       });
     }
 
-    // const promo = await stripe.coupons.create({
-    //   percent_off: 10,
-    //   name: 'TEST',
-    //   duration: 'once',
-    // });
+    let promo;
+
+    if (req.body.coupon) {
+      const coupon = await CouponModel.findOneAndUpdate(
+        {
+          coupon: { $regex: new RegExp(`^${req.body.coupon}$`), $options: 'i' },
+        },
+        { $inc: { uses: 1 } }
+      );
+      if (coupon) {
+        promo = await stripe.coupons.create({
+          percent_off: Number(coupon.percent),
+          name: coupon.name,
+          duration: 'once',
+        });
+      }
+    }
 
     const session = await stripe.checkout.sessions.create({
       line_items,
       mode: 'payment',
       success_url: `${domain}/order-complete?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${domain}/cart`,
-      // discounts: [{ coupon: promo.id }],
+      discounts: [{ coupon: promo?.id || undefined }],
       billing_address_collection: 'required',
       shipping_address_collection: {
         allowed_countries: [

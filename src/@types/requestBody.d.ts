@@ -34,7 +34,10 @@ export interface orderCreateBody {
   session_id: string;
 }
 
-export type paymentCreateBody = paymentProductItem[];
+export interface paymentCreateBody {
+  cart: paymentProductItem[];
+  coupon: string | undefined;
+}
 
 export interface couponCreateBody {
   name: string;

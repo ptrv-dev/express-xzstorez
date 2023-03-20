@@ -33,6 +33,7 @@ app.use(
     credentials: true,
     origin: [
       'http://localhost:3000',
+      'http://localhost:3001',
       'http://admin.xzstorez.com',
       'http://xzstorez.com',
       'https://admin.xzstorez.com',

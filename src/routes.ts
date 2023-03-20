@@ -110,7 +110,7 @@ export default function (app: Express) {
   );
   app.get('/coupon', verifyToken, CouponController.getAll);
   app.get('/coupon/:id', verifyToken, CouponController.getOne);
-  app.get('/coupon/find', CouponController.findOne);
+  app.get('/coupon-find', CouponController.findOne);
   app.patch(
     '/coupon/:id',
     verifyToken,
