@@ -8,6 +8,7 @@ import * as UploadController from './controllers/upload.controller';
 import * as BrandController from './controllers/brand.controller';
 import * as ProductController from './controllers/product.controller';
 import * as PaymentStripeController from './controllers/payment.stripe.controller';
+import * as PaymentSellixController from './controllers/payment.sellix.controller';
 import * as CouponController from './controllers/coupon.controller';
 
 // middleware
@@ -118,4 +119,6 @@ export default function (app: Express) {
     CouponController.edit
   );
   app.delete('/coupon/:id', verifyToken, CouponController.removeOne);
+  // sellix payments
+  app.post('/payment/sellix', PaymentSellixController.create);
 }
