@@ -4,11 +4,11 @@ const SellixOrderSchema = new mongoose.Schema(
   {
     track: {
       type: String,
-      required: true,
+      default: null,
     },
     uniqueId: {
       type: String,
-      required: true,
+      default: null,
     },
     email: {
       type: String,

@@ -33,6 +33,7 @@ import {
   createCouponValidation,
   editCouponValidation,
 } from './validations/coupon.validation';
+import { sellixOrderCreateValidation } from './validations/payment.sellix.validation';
 
 export default function (app: Express) {
   // upload routes
@@ -101,7 +102,7 @@ export default function (app: Express) {
     orderCreateValidation,
     PaymentStripeController.createOrder
   );
-  app.get('/order/:id', PaymentStripeController.track);
+  // app.get('/order/:id', PaymentStripeController.track);
   // coupon
   app.post(
     '/coupon',
@@ -121,4 +122,9 @@ export default function (app: Express) {
   app.delete('/coupon/:id', verifyToken, CouponController.removeOne);
   // sellix payments
   app.post('/payment/sellix', PaymentSellixController.create);
+  app.post(
+    '/order/sellix',
+    sellixOrderCreateValidation,
+    PaymentSellixController.createOrder
+  );
 }

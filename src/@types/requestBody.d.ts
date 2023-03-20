@@ -44,3 +44,13 @@ export interface couponCreateBody {
   coupon: string;
   percent: number;
 }
+
+export interface sellixOrderCreateBody {
+  email: string;
+  fullName: string;
+  country: string;
+  address: string;
+  city: string;
+  state: string;
+  phoneNumber: string;
+}

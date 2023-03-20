@@ -1,7 +1,12 @@
 import axios from 'axios';
 import { Request, Response } from 'express';
-import { paymentCreateBody } from '../@types/requestBody';
+import { validationResult } from 'express-validator';
+import {
+  paymentCreateBody,
+  sellixOrderCreateBody,
+} from '../@types/requestBody';
 import CouponModel from '../models/CouponModel';
+import SellixOrderModel from '../models/SellixOrderModel';
 
 const API_KEY =
   'pMu9opKQiSHAhjsmQLRCMNziw4LLpi5pw4wJbE6O1hEoEAd1HNi7zIPpDwwRerYt';
@@ -53,6 +58,23 @@ export async function create(req: Request<{}, {}, CreateBody>, res: Response) {
     return res.status(200).json(data);
   } catch (error) {
     console.log(`[Error] Payment (Sellix) create error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
+
+export async function createOrder(
+  req: Request<{}, {}, sellixOrderCreateBody>,
+  res: Response
+) {
+  try {
+    const validation = validationResult(req);
+    if (!validation.isEmpty()) return res.status(400).json(validation);
+
+    const order = await SellixOrderModel.create(req.body);
+
+    return res.status(200).json(order);
+  } catch (error) {
+    console.log(`[Error] Order (Sellix) create error!\n${error}\n\n`);
     return res.sendStatus(500);
   }
 }
