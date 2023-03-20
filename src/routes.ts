@@ -127,4 +127,5 @@ export default function (app: Express) {
     sellixOrderCreateValidation,
     PaymentSellixController.createOrder
   );
+  app.post('/order/sellix/check', PaymentSellixController.checkOrder);
 }

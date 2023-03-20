@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import { validationResult } from 'express-validator';
 import {
   paymentCreateBody,
+  sellixOrderCheckBody,
   sellixOrderCreateBody,
 } from '../@types/requestBody';
 import CouponModel from '../models/CouponModel';
@@ -75,6 +76,37 @@ export async function createOrder(
     return res.status(200).json(order);
   } catch (error) {
     console.log(`[Error] Order (Sellix) create error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
+
+export async function checkOrder(
+  req: Request<{}, {}, sellixOrderCheckBody>,
+  res: Response
+) {
+  try {
+    if (!req.body.orderId || !req.body.uniqueId) return res.sendStatus(400);
+
+    const order = await SellixOrderModel.findById(req.body.orderId);
+
+    if (!order)
+      return res
+        .status(500)
+        .json({ msg: "Order with this id doesn't exists..." });
+
+    if (order.track) return res.status(200).json({ track: order.track });
+
+    const track = (Math.random() * 1000000000).toFixed(0);
+
+    await order.updateOne({
+      track: track,
+      uniqueId: req.body.uniqueId,
+      status: 1,
+    });
+
+    return res.status(200).json({ track });
+  } catch (error) {
+    console.log(`[Error] Order (Sellix) check error!\n${error}\n\n`);
     return res.sendStatus(500);
   }
 }

@@ -54,3 +54,8 @@ export interface sellixOrderCreateBody {
   state: string;
   phoneNumber: string;
 }
+
+export interface sellixOrderCheckBody {
+  uniqueId: string;
+  orderId: string;
+}
