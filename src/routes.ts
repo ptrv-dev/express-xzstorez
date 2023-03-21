@@ -11,6 +11,7 @@ import * as PaymentStripeController from './controllers/payment.stripe.controlle
 import * as PaymentSellixController from './controllers/payment.sellix.controller';
 import * as CouponController from './controllers/coupon.controller';
 import * as TrackController from './controllers/track.controller';
+import * as SettingsController from './controllers/settings.controller';
 
 // middleware
 import { verifyToken } from './middlewares/verifyToken';
@@ -35,6 +36,7 @@ import {
   editCouponValidation,
 } from './validations/coupon.validation';
 import { sellixOrderCreateValidation } from './validations/payment.sellix.validation';
+import { settingsSetValidation } from './validations/settings.validation';
 
 export default function (app: Express) {
   // upload routes
@@ -130,4 +132,12 @@ export default function (app: Express) {
   app.post('/order/sellix/check', PaymentSellixController.checkOrder);
   // track
   app.get('/track/:id', TrackController.track);
+  // site settings
+  app.get('/settings', verifyToken, SettingsController.getSettings);
+  app.patch(
+    '/settings',
+    verifyToken,
+    settingsSetValidation,
+    SettingsController.setSettings
+  );
 }
