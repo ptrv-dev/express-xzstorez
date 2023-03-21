@@ -57,7 +57,7 @@ export async function create(
     const session = await stripe.checkout.sessions.create({
       line_items,
       mode: 'payment',
-      success_url: `${domain}/order-complete?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${domain}/order-complete?session_id={CHECKOUT_SESSION_ID}&merchant=stripe`,
       cancel_url: `${domain}/cart`,
       discounts: [{ coupon: promo?.id || undefined }],
       billing_address_collection: 'required',
