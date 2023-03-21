@@ -8,6 +8,7 @@ import {
 } from '../@types/requestBody';
 import CouponModel from '../models/CouponModel';
 import SellixOrderModel from '../models/SellixOrderModel';
+import SettingsModel from '../models/SettingsMode';
 
 const DOMAIN = 'http://localhost:3000';
 const API_KEY =
@@ -47,6 +48,11 @@ export async function create(req: Request<{}, {}, CreateBody>, res: Response) {
         total -= (total * Number(coupon.percent)) / 100;
       }
     }
+
+    const settings = await SettingsModel.findOne();
+    const cryptoDiscount = Number(settings?.cryptoDiscount);
+
+    if (!!cryptoDiscount) total -= (total * cryptoDiscount) / 100;
 
     const payload = {
       title: title.join('; '),
