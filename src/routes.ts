@@ -9,6 +9,7 @@ import * as BrandController from './controllers/brand.controller';
 import * as ProductController from './controllers/product.controller';
 import * as PaymentStripeController from './controllers/payment.stripe.controller';
 import * as PaymentSellixController from './controllers/payment.sellix.controller';
+import * as PaymentSquareController from './controllers/payment.squareup.controller';
 import * as CouponController from './controllers/coupon.controller';
 import * as TrackController from './controllers/track.controller';
 import * as SettingsController from './controllers/settings.controller';
@@ -130,6 +131,9 @@ export default function (app: Express) {
     PaymentSellixController.createOrder
   );
   app.post('/order/sellix/check', PaymentSellixController.checkOrder);
+  // squareup payments
+  app.post('/payment/squareup', PaymentSquareController.create);
+  app.post('/order/squareup', PaymentSquareController.createOrder);
   // track
   app.get('/track/:id', TrackController.track);
   // site settings

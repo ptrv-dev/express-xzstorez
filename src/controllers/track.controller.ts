@@ -4,6 +4,8 @@ import { stripe } from './payment.stripe.controller';
 
 import OrderModel from '../models/OrderModel';
 import SellixOrderModel from '../models/SellixOrderModel';
+import SquareOrderModel from '../models/SquareOrderModel';
+import { client } from './payment.squareup.controller';
 
 interface trackResult {
   fullName: string;
@@ -21,6 +23,7 @@ export async function track(req: Request, res: Response) {
 
     const stripeOrder = await OrderModel.findOne({ track: id });
     const sellixOrder = await SellixOrderModel.findOne({ track: id });
+    const squareOrder = await SquareOrderModel.findOne({ track: id });
     if (stripeOrder) {
       const session = await stripe.checkout.sessions.retrieve(
         stripeOrder.session_id
@@ -44,11 +47,35 @@ export async function track(req: Request, res: Response) {
         sellixOrder.city,
         sellixOrder.address,
       ].join(', ');
+    } else if (squareOrder) {
+      const {
+        result: { order },
+      } = await client.ordersApi.retrieveOrder(squareOrder.orderId);
+
+      const recipient =
+        order && order.fulfillments
+          ? order?.fulfillments[0].shipmentDetails?.recipient
+          : undefined;
+
+      result['fullName'] = recipient?.displayName || 'Not specified';
+      result['email'] = recipient?.emailAddress || 'Not specified';
+      result['phone'] = recipient?.phoneNumber || 'Not specified';
+      result['address'] =
+        [
+          recipient?.address?.country,
+          recipient?.address?.administrativeDistrictLevel1,
+          recipient?.address?.locality,
+          recipient?.address?.addressLine1,
+        ].join(', ') || 'Not specified';
+      console.log(recipient);
     }
 
     if (!result.address)
       return res.status(404).json({ msg: 'Incorrect track number!' });
 
     return res.status(200).json(result);
-  } catch (error) {}
+  } catch (error) {
+    console.log(`[Error] Track error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
 }
