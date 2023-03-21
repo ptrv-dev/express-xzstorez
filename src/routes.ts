@@ -133,6 +133,7 @@ export default function (app: Express) {
   // track
   app.get('/track/:id', TrackController.track);
   // site settings
+  app.get('/crypto-discount', SettingsController.getCryptoDiscount);
   app.get('/settings', verifyToken, SettingsController.getSettings);
   app.patch(
     '/settings',

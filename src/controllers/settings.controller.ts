@@ -43,3 +43,16 @@ export async function getSettings(req: Request, res: Response) {
     return res.sendStatus(500);
   }
 }
+
+export async function getCryptoDiscount(req: Request, res: Response) {
+  try {
+    const settings = await getSettingsObject();
+
+    return res.status(200).json({
+      value: settings.cryptoDiscount,
+    });
+  } catch (error) {
+    console.log(`[Error] Settings | Get crypto discount error!\n${error}\n\n`);
+    return res.sendStatus(500);
+  }
+}
