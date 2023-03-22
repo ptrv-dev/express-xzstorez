@@ -59,3 +59,9 @@ export interface sellixOrderCheckBody {
   uniqueId: string;
   orderId: string;
 }
+
+export interface inviteSendBody {
+  name: string;
+  email: string;
+  invites: string[];
+}

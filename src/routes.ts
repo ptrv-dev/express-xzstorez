@@ -13,6 +13,7 @@ import * as PaymentSquareController from './controllers/payment.squareup.control
 import * as CouponController from './controllers/coupon.controller';
 import * as TrackController from './controllers/track.controller';
 import * as SettingsController from './controllers/settings.controller';
+import * as InviteController from './controllers/invite.controller';
 
 // middleware
 import { verifyToken } from './middlewares/verifyToken';
@@ -38,6 +39,7 @@ import {
 } from './validations/coupon.validation';
 import { sellixOrderCreateValidation } from './validations/payment.sellix.validation';
 import { settingsSetValidation } from './validations/settings.validation';
+import { inviteSendValidation } from './validations/invite.validation';
 
 export default function (app: Express) {
   // upload routes
@@ -145,4 +147,6 @@ export default function (app: Express) {
     settingsSetValidation,
     SettingsController.setSettings
   );
+  // invite
+  app.post('/invite', inviteSendValidation, InviteController.sendInvite);
 }
