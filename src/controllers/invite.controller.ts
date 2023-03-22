@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import { inviteSendBody } from '../@types/requestBody';
+import InviteModel from '../models/InviteModel';
 
 const DOMAIN = 'https://xzstorez44.com';
 
@@ -26,10 +27,6 @@ export async function sendInvite(
     if (!validation.isEmpty()) return res.status(400).json(validation);
 
     const { name, email, invites } = req.body;
-    const text = `
-      Hey! Your friend ${name} (${email}) has invited you to make a purchase at our online brand clothing store.
-      Use the Invitee's Email (${email}) to get bonuses and discounts on your next purchase.
-      `;
 
     for (const invite of invites) {
       transporter.sendMail({
@@ -116,6 +113,17 @@ export async function sendInvite(
   </div>
 </body>`,
       });
+    }
+
+    const invite = await InviteModel.findOne({ email: email });
+    if (!invite) {
+      await InviteModel.create({
+        name,
+        email,
+        invites,
+      });
+    } else {
+      await invite.updateOne({ invites: [...invite.invites, ...invites] });
     }
 
     return res.status(200).json({ msg: 'Success' });
