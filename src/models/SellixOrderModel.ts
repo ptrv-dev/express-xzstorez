@@ -32,7 +32,6 @@ const SellixOrderSchema = new mongoose.Schema(
     },
     state: {
       type: String,
-      required: true,
     },
     phoneNumber: {
       type: String,
