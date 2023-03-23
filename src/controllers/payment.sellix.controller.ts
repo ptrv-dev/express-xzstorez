@@ -7,8 +7,10 @@ import {
   sellixOrderCreateBody,
 } from '../@types/requestBody';
 import CouponModel from '../models/CouponModel';
+import InviteModel from '../models/InviteModel';
 import SellixOrderModel from '../models/SellixOrderModel';
 import SettingsModel from '../models/SettingsMode';
+import { sendInviteUsed } from './invite.controller';
 
 const DOMAIN = 'http://localhost:3000';
 const API_KEY =
@@ -46,6 +48,15 @@ export async function create(req: Request<{}, {}, CreateBody>, res: Response) {
       );
       if (coupon) {
         total -= (total * Number(coupon.percent)) / 100;
+      }
+    }
+
+    if (req.body.invite?.trim()) {
+      const invite = await InviteModel.findOne({
+        email: req.body.invite.trim(),
+      });
+      if (invite) {
+        sendInviteUsed(invite.email);
       }
     }
 

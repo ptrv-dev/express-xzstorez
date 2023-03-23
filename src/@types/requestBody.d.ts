@@ -37,6 +37,7 @@ export interface orderCreateBody {
 export interface paymentCreateBody {
   cart: paymentProductItem[];
   coupon: string | undefined;
+  invite: string | undefined;
 }
 
 export interface couponCreateBody {

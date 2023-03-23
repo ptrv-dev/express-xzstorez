@@ -31,11 +31,11 @@ export async function sendInvite(
     for (const invite of invites) {
       transporter.sendMail({
         to: invite,
-        subject: 'XZstore - Online store brand clothing',
+        subject: '007WATCHES',
         html: `
 <!DOCTYPE html>
 <head>
-  <title>XZstorez</title>
+  <title>007WATCHES</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link
@@ -90,19 +90,18 @@ export async function sendInvite(
   </style>
 </head>
 <body>
-  <div class="container"><h1 class="logo">XZstorez</h1></div>
+  <div class="container"><h1 class="logo">007WATCHES</h1></div>
   <hr />
   <div class="container">
     <p>
-      Hey! Your friend <strong>${name}</strong> invited you to our online clothing
-      store.
+      Hey! Your friend <strong>${name}</strong> invited you to our online store.
     </p>
     <p>
       When you make a purchase in our store, you can enter the Invitee's Email
       and you will be given a discount on your next purchases.
     </p>
     <p>
-      Also, you can invite other people to buy clothes in our online store and
+      Also, you can invite other people to buy in our online store and
       get for that nice bonuses and discounts.
     </p>
     <div class="card">
@@ -130,5 +129,96 @@ export async function sendInvite(
   } catch (error) {
     console.log(`[Error] Send invite error!\n${error}\n\n`);
     return res.sendStatus(500);
+  }
+}
+
+export async function sendInviteUsed(email: string) {
+  try {
+    transporter.sendMail({
+      to: email,
+      subject: '007WATCHES',
+      html: `
+      <!DOCTYPE html>
+      <head>
+        <title>007WATCHES</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+        <style>
+          * {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+            font-family: 'Poppins';
+          }
+          body {
+            padding: 18px 0;
+            font-size: 18px;
+            color: rgba(0, 0, 0, 0.8);
+          }
+          hr {
+            margin: 0.5rem 0;
+          }
+          .container {
+            padding: 0 25px;
+          }
+          .logo {
+            font-size: 26px;
+            font-weight: 500;
+            color: #000000;
+            text-align: center;
+          }
+          strong {
+            font-weight: 500;
+            color: #000000;
+          }
+          .card {
+            background-color: #f5f5f5;
+            padding: 1rem;
+            margin-top: 1rem;
+            display: inline-block;
+          }
+          .button {
+            font-size: 1rem;
+            background-color: #000000;
+            color: #ffffff !important;
+            font-weight: 500;
+            border-radius: 10px;
+            text-decoration: none;
+            padding: 10px 30px;
+            display: inline-block;
+            margin-top: 1rem;
+          }
+        </style>
+      </head>
+      <body>
+        <div class="container"><h1 class="logo">007WATCHES</h1></div>
+        <hr />
+        <div class="container">
+          <p>
+            Hey! One of your invited friends made a purchase and gave your Email
+            address.
+          </p>
+          <p>
+            For this you will be given bonuses for the next purchase, expect them to
+            be credited to your Email within 24 hours.
+          </p>
+          <p>
+            In the meantime, you can invite even more friends and get together even
+            more bonuses
+          </p>
+          <a class="button" href="${DOMAIN}/invite"
+            >Invite more friends</a
+          >
+        </div>
+      </body>
+      
+      `,
+    });
+  } catch (error) {
+    console.log(`[Error] Send invite USE error!\n${error}\n\n`);
   }
 }

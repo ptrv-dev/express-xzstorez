@@ -3,7 +3,9 @@ import { validationResult } from 'express-validator';
 import Stripe from 'stripe';
 import { orderCreateBody, paymentCreateBody } from '../@types/requestBody';
 import CouponModel from '../models/CouponModel';
+import InviteModel from '../models/InviteModel';
 import OrderModel from '../models/OrderModel';
+import { sendInviteUsed } from './invite.controller';
 
 export const stripe = new Stripe(
   'sk_test_51MQqzAGLf8CEUHkqkYcPL0KHoCaaWmbpCbIrZMjJK58a3oaNac3Qy6ZKkod8DIqWiQLOj6PUFu3X49rKADpmKybk00rWJiZg6g',
@@ -51,6 +53,15 @@ export async function create(
           name: coupon.name,
           duration: 'once',
         });
+      }
+    }
+
+    if (req.body.invite?.trim()) {
+      const invite = await InviteModel.findOne({
+        email: req.body.invite.trim(),
+      });
+      if (invite) {
+        sendInviteUsed(invite.email);
       }
     }
 

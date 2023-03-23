@@ -2,7 +2,9 @@ import { Request, Response } from 'express';
 import { Client, Environment, OrderLineItem } from 'square';
 import { paymentCreateBody } from '../@types/requestBody';
 import CouponModel from '../models/CouponModel';
+import InviteModel from '../models/InviteModel';
 import SquareOrderModel from '../models/SquareOrderModel';
+import { sendInviteUsed } from './invite.controller';
 
 const DOMAIN = 'http://localhost:3000';
 const ACCESS_TOKEN =
@@ -48,6 +50,15 @@ export async function create(
           type: 'FIXED_PERCENTAGE',
           percentage: String(coupon.percent),
         };
+      }
+    }
+
+    if (req.body.invite?.trim()) {
+      const invite = await InviteModel.findOne({
+        email: req.body.invite.trim(),
+      });
+      if (invite) {
+        sendInviteUsed(invite.email);
       }
     }
 
