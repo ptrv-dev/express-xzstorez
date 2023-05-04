@@ -7,12 +7,10 @@ import SquareOrderModel from '../models/SquareOrderModel';
 import { sendInviteUsed } from './invite.controller';
 
 const DOMAIN = 'http://localhost:3000';
-const ACCESS_TOKEN =
-  'EAAAEHJLSsIiZUCLzXHB_bNQRj6A_vFbmHVyaUVnYBbdQarVyUXiCpVhnmo6Hsok';
-const LOCATION = 'L2D790ZS6CP1F';
+const LOCATION = process.env.SQUAREUP_LOCATION || '';
 
 export const client = new Client({
-  accessToken: ACCESS_TOKEN,
+  accessToken: process.env.SQUAREUP_API_KEY || '',
   environment: Environment.Sandbox,
 });
 

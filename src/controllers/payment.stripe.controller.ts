@@ -7,10 +7,9 @@ import InviteModel from '../models/InviteModel';
 import OrderModel from '../models/OrderModel';
 import { sendInviteUsed } from './invite.controller';
 
-export const stripe = new Stripe(
-  'sk_test_51MQqzAGLf8CEUHkqkYcPL0KHoCaaWmbpCbIrZMjJK58a3oaNac3Qy6ZKkod8DIqWiQLOj6PUFu3X49rKADpmKybk00rWJiZg6g',
-  { apiVersion: '2022-11-15' }
-);
+export const stripe = new Stripe(process.env.STRIPE_API_KEY || '', {
+  apiVersion: '2022-11-15',
+});
 
 const domain = 'http://localhost:3000';
 

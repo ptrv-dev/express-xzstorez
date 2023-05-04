@@ -13,12 +13,10 @@ import SettingsModel from '../models/SettingsMode';
 import { sendInviteUsed } from './invite.controller';
 
 const DOMAIN = 'http://localhost:3000';
-const API_KEY =
-  'pMu9opKQiSHAhjsmQLRCMNziw4LLpi5pw4wJbE6O1hEoEAd1HNi7zIPpDwwRerYt';
 
 const appAxios = axios.create({
   baseURL: 'https://dev.sellix.io/v1',
-  headers: { Authorization: `Bearer ${API_KEY}` },
+  headers: { Authorization: `Bearer ${process.env.SELLIX_API_KEY}` },
 });
 
 interface CreateBody extends paymentCreateBody {
